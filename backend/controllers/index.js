@@ -26,6 +26,16 @@ const findProductByid = async (req, res) => {
   }
 }
 
+const getSaleProducts = async (req, res) => {
+  try {
+    const products = await Product.find({ isOnsale: 'true' })
+    console.log(products)
+    res.json({ products })
+  } catch (e) {
+    return res.send(e.message)
+  }
+}
+
 const createUser = async (req, res) => {
   try {
     const newUser = await new User(req.body)
@@ -37,15 +47,34 @@ const createUser = async (req, res) => {
   }
 }
 
-const findUser = async (req, res)=>{
-  try{
-    console.log('this is console',req.body);
+const findUser = async (req, res) => {
+  try {
+    console.log('this is console', req.body)
     const user = await User.findOne(req.body)
-    console.log(user);
+    console.log(user)
     res.status(200).json(user)
-  }catch(e) {
+  } catch (e) {
     return res.send(e.message)
   }
 }
+const searchProduct = async (req, res) => {
+  try {
+    const searchWord = req.body.product
+    const product = await Product.find({
+      product: { $regex: searchWord, $options: 'i' }
+    })
+    console.log(product)
+    res.status(200).json(product)
+  } catch (e) {
+    console.log(e.message)
+  }
+}
 
-module.exports = { getALLProducts, findProductByid, createUser,findUser}
+module.exports = {
+  getALLProducts,
+  findProductByid,
+  createUser,
+  findUser,
+  searchProduct,
+  getSaleProducts
+}
