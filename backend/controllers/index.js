@@ -51,10 +51,11 @@ const findUser = async (req, res) => {
   try {
     console.log('this is console', req.body)
     const user = await User.findOne(req.body)
+
     console.log(user)
     res.status(200).json(user)
   } catch (e) {
-    return res.send(e.message)
+    return res.status(500).send(error.message)
   }
 }
 const searchProduct = async (req, res) => {
@@ -66,15 +67,40 @@ const searchProduct = async (req, res) => {
     console.log(product)
     res.status(200).json(product)
   } catch (e) {
-    console.log(e.message)
+    return res.status(500).send(error.message)
   }
 }
 
+const updateUser = async (req, res) => {
+  try {
+    const updateUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true
+    })
+    res.status(200).json(updateUser)
+  } catch (error) {
+    return res.status(500).send(error.message)
+  }
+}
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params
+    const deleted = await User.findByIdAndDelete(id)
+    if (deleted) {
+      return res.status(200).send('User deleted')
+    }
+    throw new Error('User not found')
+  } catch (error) {
+    return res.status(500).send(error.message)
+  }
+}
 module.exports = {
   getALLProducts,
   findProductByid,
   createUser,
   findUser,
   searchProduct,
-  getSaleProducts
+  getSaleProducts,
+  updateUser,
+  deleteUser
 }
