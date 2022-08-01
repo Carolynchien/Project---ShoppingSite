@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import video1 from './pexels-cottonbro-5379129.mp4'
+// import video1 from './video.mp4'
 import Collection from './Collection'
 import WomenPg from './Womenpg'
 import Sales from './Sales'
